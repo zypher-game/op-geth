@@ -21,6 +21,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"github.com/ethereum/go-ethereum/precompiles"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -121,12 +122,21 @@ var PrecompiledContractsBLS = map[common.Address]PrecompiledContract{
 	common.BytesToAddress([]byte{18}): &bls12381MapG2{},
 }
 
+var PrecompiledContractsZytron = map[common.Address]PrecompiledContract{
+	common.BytesToAddress([]byte{20}): &precompiles.Anemoi{},
+	common.BytesToAddress([]byte{21}): &precompiles.EdOnBN254PointAdd{},
+	common.BytesToAddress([]byte{22}): &precompiles.EdOnBN254ScalarMul{},
+	common.BytesToAddress([]byte{23}): &precompiles.VerifyMatchmaking{},
+	common.BytesToAddress([]byte{24}): &precompiles.VerifyShuffle{},
+}
+
 var (
 	PrecompiledAddressesCancun    []common.Address
 	PrecompiledAddressesBerlin    []common.Address
 	PrecompiledAddressesIstanbul  []common.Address
 	PrecompiledAddressesByzantium []common.Address
 	PrecompiledAddressesHomestead []common.Address
+	PrecompiledAddressesZytron    []common.Address
 )
 
 func init() {
@@ -145,22 +155,32 @@ func init() {
 	for k := range PrecompiledContractsCancun {
 		PrecompiledAddressesCancun = append(PrecompiledAddressesCancun, k)
 	}
+	for k := range PrecompiledContractsZytron {
+		PrecompiledAddressesZytron = append(PrecompiledAddressesZytron, k)
+	}
 }
 
 // ActivePrecompiles returns the precompiles enabled with the current configuration.
 func ActivePrecompiles(rules params.Rules) []common.Address {
+	var precompiles []common.Address
+
 	switch {
 	case rules.IsCancun:
-		return PrecompiledAddressesCancun
+		precompiles = append(precompiles, PrecompiledAddressesCancun...)
 	case rules.IsBerlin:
-		return PrecompiledAddressesBerlin
+		precompiles = append(precompiles, PrecompiledAddressesBerlin...)
 	case rules.IsIstanbul:
-		return PrecompiledAddressesIstanbul
+		precompiles = append(precompiles, PrecompiledAddressesIstanbul...)
 	case rules.IsByzantium:
-		return PrecompiledAddressesByzantium
+		precompiles = append(precompiles, PrecompiledAddressesByzantium...)
 	default:
-		return PrecompiledAddressesHomestead
+		precompiles = append(precompiles, PrecompiledAddressesHomestead...)
 	}
+
+	// default add
+	precompiles = append(precompiles, PrecompiledAddressesZytron...)
+
+	return precompiles
 }
 
 // RunPrecompiledContract runs and evaluates the output of a precompiled contract.
