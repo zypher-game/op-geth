@@ -8,5 +8,5 @@
 	shallow = true
 [submodule "precompiles"]
 	path = precompiles
-	url = git@github.com:zypher-game/zytron-op-precompiles.git
+	url = https://github.com/zypher-game/zytron-op-precompiles
 	branch = op
