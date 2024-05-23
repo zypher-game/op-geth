@@ -106,6 +106,11 @@ var PrecompiledContractsCancun = map[common.Address]PrecompiledContract{
 	common.BytesToAddress([]byte{8}):    &bn256PairingIstanbul{},
 	common.BytesToAddress([]byte{9}):    &blake2F{},
 	common.BytesToAddress([]byte{0x0a}): &kzgPointEvaluation{},
+	common.BytesToAddress([]byte{20}):   &precompiles.Anemoi{},
+	common.BytesToAddress([]byte{21}):   &precompiles.EdOnBN254PointAdd{},
+	common.BytesToAddress([]byte{22}):   &precompiles.EdOnBN254ScalarMul{},
+	common.BytesToAddress([]byte{23}):   &precompiles.VerifyMatchmaking{},
+	common.BytesToAddress([]byte{24}):   &precompiles.VerifyShuffle{},
 }
 
 // PrecompiledContractsBLS contains the set of pre-compiled Ethereum
@@ -122,13 +127,13 @@ var PrecompiledContractsBLS = map[common.Address]PrecompiledContract{
 	common.BytesToAddress([]byte{18}): &bls12381MapG2{},
 }
 
-var PrecompiledContractsZytron = map[common.Address]PrecompiledContract{
-	common.BytesToAddress([]byte{20}): &precompiles.Anemoi{},
-	common.BytesToAddress([]byte{21}): &precompiles.EdOnBN254PointAdd{},
-	common.BytesToAddress([]byte{22}): &precompiles.EdOnBN254ScalarMul{},
-	common.BytesToAddress([]byte{23}): &precompiles.VerifyMatchmaking{},
-	common.BytesToAddress([]byte{24}): &precompiles.VerifyShuffle{},
-}
+//var PrecompiledContractsZytron = map[common.Address]PrecompiledContract{
+//	common.BytesToAddress([]byte{20}): &precompiles.Anemoi{},
+//	common.BytesToAddress([]byte{21}): &precompiles.EdOnBN254PointAdd{},
+//	common.BytesToAddress([]byte{22}): &precompiles.EdOnBN254ScalarMul{},
+//	common.BytesToAddress([]byte{23}): &precompiles.VerifyMatchmaking{},
+//	common.BytesToAddress([]byte{24}): &precompiles.VerifyShuffle{},
+//}
 
 var (
 	PrecompiledAddressesCancun    []common.Address
@@ -154,9 +159,6 @@ func init() {
 	}
 	for k := range PrecompiledContractsCancun {
 		PrecompiledAddressesCancun = append(PrecompiledAddressesCancun, k)
-	}
-	for k := range PrecompiledContractsZytron {
-		PrecompiledAddressesZytron = append(PrecompiledAddressesZytron, k)
 	}
 }
 

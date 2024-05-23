@@ -53,11 +53,6 @@ func (evm *EVM) precompile(addr common.Address) (PrecompiledContract, bool) {
 		precompiles = PrecompiledContractsHomestead
 	}
 
-	// Always add Zytron's precompiled contracts.
-	for address, contract := range PrecompiledContractsZytron {
-		precompiles[address] = contract
-	}
-
 	p, ok := precompiles[addr]
 	// Restrict overrides to known precompiles
 	if ok && evm.chainConfig.IsOptimism() && evm.Config.OptimismPrecompileOverrides != nil {
