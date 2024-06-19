@@ -9,4 +9,3 @@
 [submodule "precompiles"]
 	path = precompiles
 	url = https://github.com/zypher-game/zytron-op-precompiles
-	branch = op
