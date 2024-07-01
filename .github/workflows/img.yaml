@@ -9,6 +9,8 @@ jobs:
   build-image:
     name: Build Image
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
 
     steps:
     - name: Checkout branch
