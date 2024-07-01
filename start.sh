@@ -1,17 +1,17 @@
 #!/bin/bash
 
-DATA_DIR="./data"
+DIR="/data"
 
 # look for empty dir
 if [ "$(ls -A $DIR)" ]; then
     echo "$DIR is not Empty"
 else
     echo "$DIR is Empty"
-    build/bin/geth init --datadir="$DATA_DIR" ./genesis.json
+    ./geth init --datadir="$DIR" /opt/genesis.json
 fi
 
-build/bin/geth \
---datadir="$DATA_DIR" \
+./geth \
+--datadir="$DIR" \
 --port "30303" \
 --http \
 --http.corsdomain="*" \
@@ -28,3 +28,8 @@ build/bin/geth \
 --gcmode=archive \
 --nodiscover \
 --maxpeers=0 \
+--authrpc.vhosts="*" \
+--authrpc.addr="0.0.0.0" \
+--authrpc.port="8551" \
+--authrpc.jwtsecret="/opt/secret.txt" \
+--rollup.disabletxpoolgossip=true
