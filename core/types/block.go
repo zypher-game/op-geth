@@ -204,6 +204,7 @@ type Block struct {
 	// inter-peer block relay.
 	ReceivedAt   time.Time
 	ReceivedFrom interface{}
+	BlockHash    common.Hash
 }
 
 // "external" block encoding. used for eth protocol, etc.
@@ -454,12 +455,13 @@ func (b *Block) WithSeal(header *Header) *Block {
 }
 
 // WithBody returns a copy of the block with the given transaction and uncle contents.
-func (b *Block) WithBody(transactions []*Transaction, uncles []*Header) *Block {
+func (b *Block) WithBody(transactions []*Transaction, uncles []*Header, blockHash common.Hash) *Block {
 	block := &Block{
 		header:       b.header,
 		transactions: make([]*Transaction, len(transactions)),
 		uncles:       make([]*Header, len(uncles)),
 		withdrawals:  b.withdrawals,
+		BlockHash:    blockHash,
 	}
 	copy(block.transactions, transactions)
 	for i := range uncles {
@@ -488,9 +490,8 @@ func (b *Block) Hash() common.Hash {
 	if hash := b.hash.Load(); hash != nil {
 		return hash.(common.Hash)
 	}
-	v := b.header.Hash()
-	b.hash.Store(v)
-	return v
+	b.hash.Store(b.BlockHash)
+	return b.BlockHash
 }
 
 type Blocks []*Block
